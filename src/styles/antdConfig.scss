@@ -1,0 +1,29 @@
+.collapse-no-padding {
+  .ant-collapse-header, .ant-collapse-content-box {
+    padding: 0 !important;
+  }
+
+  .ant-collapse-header {
+    &:hover {
+      color: #0084ff;
+    }
+  }
+}
+
+.ant-menu {
+  border-inline-end: none !important;
+}
+
+.ant-breadcrumb {
+  ol {
+    align-items: center;
+  }
+}
+
+.ant-upload-list-item {
+  overflow: hidden;
+}
+
+.ant-message-custom-content {
+  display: flex !important;
+}
