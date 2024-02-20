@@ -33,7 +33,9 @@ const SignIn = () => {
             return message.warning(response.error)
           }
 
-          router.push('/')
+          console.log(response)
+
+          router.push({ pathname: '/' })
         })
         .catch((error) => {
           console.log(error)
