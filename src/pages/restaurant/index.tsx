@@ -4,8 +4,7 @@ import { ICategory } from "@/models/Category/CategoryModel"
 import { IRestaurant, RestaurantDto } from "@/models/Restaurant/RestaurantModel"
 import RestaurantRepository from "@/services/Repositories/RestaurantRepository"
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Image, Modal, Typography, message, Table, Tooltip, Tag } from "antd"
-import { ColumnsType } from "antd/es/table"
+import { Button, Flex, Form, Image, Modal, Typography, message, Table, Tooltip, Tag, TableColumnsType } from "antd"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -111,7 +110,7 @@ const Restaurant = () => {
       });
   }
 
-  const columns: ColumnsType<IRestaurant> = [
+  const columns: TableColumnsType<IRestaurant> = [
     {
       title: 'Tên nhà hàng',
       dataIndex: 'name',

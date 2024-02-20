@@ -3,8 +3,7 @@ import MainLayout from "@/layouts/MainLayout/MainLayout"
 import { DishDto, IDish, IRestaurant } from "@/models/Restaurant/RestaurantModel"
 import RestaurantRepository from "@/services/Repositories/RestaurantRepository"
 import { DeleteOutlined, EditOutlined, LeftOutlined, PlusOutlined } from "@ant-design/icons"
-import { Avatar, Button, Divider, Flex, Form, Image, Modal, Spin, Table, Tag, Typography, message } from "antd"
-import { ColumnsType } from "antd/es/table"
+import { Avatar, Button, Divider, Flex, Form, Image, Modal, Spin, Table, TableColumnsType, Tag, Typography, message } from "antd"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -115,7 +114,7 @@ const RestaurantDetail = () => {
     });
   }
 
-  const columns: ColumnsType<IDish> = [
+  const columns: TableColumnsType<IDish> = [
     {
       title: 'Tên món ăn',
       dataIndex: 'name',

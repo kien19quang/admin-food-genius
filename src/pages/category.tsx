@@ -3,8 +3,7 @@ import MainLayout from "@/layouts/MainLayout/MainLayout"
 import { CategoryDto, ICategory } from "@/models/Category/CategoryModel"
 import CategoryRepository from "@/services/Repositories/CategoryRepository"
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Image, Modal, Table, Typography, message } from "antd"
-import { ColumnsType } from "antd/es/table"
+import { Button, Flex, Form, Image, Modal, Table, TableColumnsType, Typography, message } from "antd"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 
@@ -108,7 +107,7 @@ const Category = () => {
       });
   }
 
-  const columns: ColumnsType<ICategory> = [
+  const columns: TableColumnsType<ICategory> = [
     {
       title: 'Tiêu đề',
       dataIndex: 'title',

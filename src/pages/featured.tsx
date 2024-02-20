@@ -3,8 +3,7 @@ import MainLayout from "@/layouts/MainLayout/MainLayout"
 import { FeaturedDto, IFeatured, IRestaurant } from "@/models/Restaurant/RestaurantModel"
 import RestaurantRepository from "@/services/Repositories/RestaurantRepository"
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Modal, Switch, Typography, message } from "antd"
-import Table, { ColumnsType } from "antd/es/table"
+import { Button, Flex, Form, Modal, Switch, Typography, message, Table, TableColumnsType } from "antd"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 
@@ -118,7 +117,7 @@ const Featured = () => {
     }
   }
 
-  const columns: ColumnsType<IFeatured> = [
+  const columns: TableColumnsType<IFeatured> = [
     {
       title: 'Hiển thị',
       dataIndex: 'isVisible',

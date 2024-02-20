@@ -5,9 +5,8 @@ import { IRegisterDto } from '@/models/Auth/AuthTypes';
 import { IUser } from '@/models/User/UserModel';
 import UserRepository from '@/services/Repositories/UserRepository';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Flex, Form, Modal, Typography, message, Table } from 'antd'
+import { Button, Flex, Form, Modal, Typography, message, Table, TableColumnsType } from 'antd'
 import { DataSourceItemType } from 'antd/es/auto-complete';
-import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { InferGetServerSidePropsType, NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
@@ -103,7 +102,7 @@ const Home = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => 
       });
   };
 
-  const columns: ColumnsType<IUser> = [
+  const columns: TableColumnsType<IUser> = [
     {
       title: 'Tên người dùng',
       dataIndex: 'name',
