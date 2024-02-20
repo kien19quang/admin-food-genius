@@ -24,7 +24,7 @@ const SignIn = () => {
       form
         .validateFields()
         .then(async (values: IRegisterDto) => {
-          const resRegister = await ApiClient.POST('/api/auth/register', values)
+          const resRegister = await ApiClient.POST('/auth/register', values)
           if (resRegister?.error) {
             return message.error(resRegister.error)
           }
