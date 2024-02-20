@@ -1,9 +1,12 @@
 import ModalDish from "@/components/Modals/ModalAddDish"
 import MainLayout from "@/layouts/MainLayout/MainLayout"
+import { IOrder } from "@/models/Order/Order"
 import { DishDto, IDish, IRestaurant } from "@/models/Restaurant/RestaurantModel"
+import { IUser } from "@/models/User/UserModel"
+import OrderRepository from "@/services/Repositories/OrderRepository"
 import RestaurantRepository from "@/services/Repositories/RestaurantRepository"
 import { DeleteOutlined, EditOutlined, LeftOutlined, PlusOutlined } from "@ant-design/icons"
-import { Avatar, Button, Divider, Flex, Form, Image, Modal, Spin, Table, TableColumnsType, Tag, Typography, message } from "antd"
+import { Avatar, Button, Divider, Flex, Form, Image, Modal, Spin, Table, TableColumnsType, Tabs, TabsProps, Tag, Typography, message } from "antd"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -20,12 +23,16 @@ const RestaurantDetail = () => {
   const [idEditDish, setIdEditDish] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false)
+  const [activeKey, setActiveKey] = useState<string>('dishes')
+  const [listOrder, setListOrder] = useState<IOrder[]>([])
+  const [loadingOrder, setLoadingOrder] = useState<boolean>(false)
 
   const [form] = Form.useForm()
 
   useEffect(() => {
     if (idRestaurant) {
       handleGetDetailRestaurant()
+      handleGetOrder()
     }
   }, [idRestaurant])
 
@@ -34,6 +41,15 @@ const RestaurantDetail = () => {
     const response = await RestaurantRepository.getDetailRestaurant(idRestaurant)
     setLoading(false)
     setRestaurant(response)
+  }
+
+  const handleGetOrder = async () => {
+    setLoadingOrder(true)
+    const response = await OrderRepository.getListOrder(idRestaurant)
+    setLoadingOrder(false)
+    if (response) {
+      setListOrder(response)
+    }
   }
 
   const handleCancelModal = () => {
@@ -114,7 +130,7 @@ const RestaurantDetail = () => {
     });
   }
 
-  const columns: TableColumnsType<IDish> = [
+  const columnsDish: TableColumnsType<IDish> = [
     {
       title: 'Tên món ăn',
       dataIndex: 'name',
@@ -154,6 +170,54 @@ const RestaurantDetail = () => {
       },
       width: 120,
     },
+  ];
+
+  const columnsOrder: TableColumnsType<IOrder> = [
+    {
+      title: 'Mã giao dịch',
+      dataIndex: '_id'
+    },
+    { 
+      title: 'Nhà hàng',
+      dataIndex: 'restaurant',
+      render: (value: IRestaurant) => value?.name
+    },
+    {
+      title: 'Khách hàng',
+      dataIndex: 'customer',
+      render: (value: IUser) => value?.name
+    },
+    {
+      title: 'Thanh toán',
+      dataIndex: 'isPaid',
+      render: value => value ? <Tag color='success'>Đã thanh toán</Tag> : <Tag color='error'>Chưa thanh toán</Tag>
+    },
+    {
+      title: 'Vận chuyển',
+      dataIndex: 'isShipped',
+      render: value => value ? <Tag color='success'>Đã vận chuyển</Tag> : <Tag color='error'>Chưa vận chuyển</Tag>
+    },
+  ]
+
+  const items: TabsProps['items'] = [
+    {
+      key: 'dishes',
+      label: 'Các món ăn',
+      children: (
+        <Flex vertical gap={16}>
+          <Flex justify='end' align='center'>
+            <Button type='primary' icon={<PlusOutlined />} onClick={() => setOpenModalAddDish(true)}>Thêm món ăn</Button>
+          </Flex>
+
+          <Table loading={loading} pagination={{ showSizeChanger: true }} columns={columnsDish} dataSource={[...restaurant?.dishes || []]} bordered={false} style={{ width: '100%' }} />
+        </Flex>
+      ),
+    },
+    {
+      key: 'order',
+      label: 'Hoá đơn',
+      children: <Table loading={loadingOrder} columns={columnsOrder} dataSource={listOrder} bordered={false} style={{ width: '100%' }} />,
+    }
   ];
 
   return (
@@ -212,15 +276,7 @@ const RestaurantDetail = () => {
           </Spin>
   
           <Flex style={{ padding: 20, borderRadius: 8, backgroundColor: 'white', flex: 1 }}>
-            <Flex vertical gap={16}>
-              <Flex justify='space-between' align='center'>
-                <Text style={{ fontWeight: 500, fontSize: 16 }}>Các món ăn</Text>
-  
-                <Button type='primary' icon={<PlusOutlined />} onClick={() => setOpenModalAddDish(true)}>Thêm món ăn</Button>
-              </Flex>
-  
-              <Table loading={loading} pagination={{ showSizeChanger: true }} columns={columns} dataSource={[...restaurant?.dishes || []]} bordered={false} style={{ width: '100%' }} />
-            </Flex>
+            <Tabs items={items} activeKey={activeKey} onChange={key => setActiveKey(key)} style={{ width: '100%' }} />
           </Flex>
         </Flex>
       </Flex>

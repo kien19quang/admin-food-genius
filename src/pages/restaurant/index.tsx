@@ -3,7 +3,7 @@ import MainLayout from "@/layouts/MainLayout/MainLayout"
 import { ICategory } from "@/models/Category/CategoryModel"
 import { IRestaurant, RestaurantDto } from "@/models/Restaurant/RestaurantModel"
 import RestaurantRepository from "@/services/Repositories/RestaurantRepository"
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Flex, Form, Image, Modal, Typography, message, Table, Tooltip, Tag, TableColumnsType } from "antd"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
@@ -162,8 +162,8 @@ const Restaurant = () => {
       render: (_, record) => {
         return (
           <Flex gap={16}>
-            <Tooltip title='Thêm món ăn cho nhà hàng' placement='top'>
-              <Button type='primary' icon={<PlusOutlined />} onClick={() => router.push({ pathname: `restaurant/${record._id}` })}/>
+            <Tooltip title='Quản lý nhà hàng' placement='top'>
+              <Button type='primary' icon={<EyeOutlined />} onClick={() => router.push({ pathname: `restaurant/${record._id}` })}/>
             </Tooltip>
             <Button icon={<EditOutlined />} onClick={() => handleEditRestaurant(record)} />
             <Button danger icon={<DeleteOutlined />} onClick={() => handleDeleteRestaurant(record)} />
