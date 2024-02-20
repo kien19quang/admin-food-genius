@@ -29,10 +29,9 @@ const SignIn = () => {
             redirect: false,
             callbackUrl: '/'
           });
-          // if (response?.error) {
-          //   return message.warning(response.error)
-          // }
-
+          if (response?.error) {
+            return message.warning(response.error)
+          }
           console.log(response)
 
           router.push({ pathname: '/' })
