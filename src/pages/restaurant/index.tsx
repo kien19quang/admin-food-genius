@@ -1,11 +1,13 @@
 import ModalRestaurant from "@/components/Modals/ModalAddRestaurant"
 import MainLayout from "@/layouts/MainLayout/MainLayout"
+import { ICategory } from "@/models/Category/CategoryModel"
 import { IRestaurant, RestaurantDto } from "@/models/Restaurant/RestaurantModel"
 import RestaurantRepository from "@/services/Repositories/RestaurantRepository"
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Flex, Form, Image, Modal, Typography, message, Table } from "antd"
+import { Button, Flex, Form, Image, Modal, Typography, message, Table, Tooltip, Tag } from "antd"
 import { ColumnsType } from "antd/es/table"
 import dayjs from "dayjs"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
 
@@ -18,6 +20,8 @@ const Restaurant = () => {
   const [idEditRestaurant, setIdEditRestaurant] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false);
+  
+  const router = useRouter()
 
   const [form] = Form.useForm()
 
@@ -39,6 +43,7 @@ const Restaurant = () => {
     setOpenModalAddRestaurant(true);
     form.setFieldsValue({
       ...record,
+      categoriesIds: record.categories.map(item => item._id),
       file: [{
         uid: record._id,
         status: 'done',
@@ -52,8 +57,8 @@ const Restaurant = () => {
     confirm({
       title: 'Bạn có chắc muốn xoá nhà hàng này không?',
       onOk: async () => {
-        const user = await RestaurantRepository.deleteRestaurant(record._id);
-        if (user) {
+        const response = await RestaurantRepository.deleteRestaurant(record._id);
+        if (response?.deletedCount) {
           setListRestaurant((prev) => prev.filter((item) => item._id !== record._id));
           message.success('Xoá nhà hàng thành công');
         }
@@ -81,10 +86,10 @@ const Restaurant = () => {
             newListRestaurant.push(restaurant)
           }
         } else {
-          const category = await RestaurantRepository.updateRestaurant(idEditRestaurant, values);
-          if (category) {
-            const index = newListRestaurant.findIndex((item) => item._id === category._id);
-            newListRestaurant[index] = category;
+          const restaurant = await RestaurantRepository.updateRestaurant(idEditRestaurant, values);
+          if (restaurant) {
+            const index = newListRestaurant.findIndex((item) => item._id === restaurant._id);
+            newListRestaurant[index] = restaurant;
           }
         }
         message.success(idEditRestaurant ? 'Cập nhật nhà hàng thành công' : 'Thêm nhà hàng thành công');
@@ -123,7 +128,8 @@ const Restaurant = () => {
       title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
-      render: value => <Image src={value} alt="Ảnh nhà hàng" width={40} height={40} style={{ objectFit: 'cover' }} />
+      render: value => <Image src={value} alt="Ảnh nhà hàng" width={40} height={40} style={{ objectFit: 'cover' }} />,
+      width: 80
     },
     {
       title: 'Địa chỉ',
@@ -131,16 +137,25 @@ const Restaurant = () => {
       key: 'address',
     },
     {
-      title: 'Ngày tạo',
-      key: 'createdAt',
-      dataIndex: 'createdAt',
-      render: value => dayjs(value).format('DD-MM-YYYY')
-    },
-    {
-      title: 'Ngày cập nhật',
-      key: 'updatedAt',
-      dataIndex: 'updatedAt',
-      render: value => dayjs(value).format('DD-MM-YYYY')
+      title: 'Danh mục',
+      dataIndex: 'categories',
+      render: (value: ICategory[]) => {
+        if (!value.length) {
+          return "--"
+        }
+        return (
+          <Flex>
+            {value.map(item => {
+              return (
+                <Tag key={item._id}>
+                  {item.title}
+                </Tag>
+              )
+            })}
+          </Flex>
+        )
+      },
+      ellipsis: true
     },
     {
       title: 'Action',
@@ -148,12 +163,15 @@ const Restaurant = () => {
       render: (_, record) => {
         return (
           <Flex gap={16}>
+            <Tooltip title='Thêm món ăn cho nhà hàng' placement='top'>
+              <Button type='primary' icon={<PlusOutlined />} onClick={() => router.push({ pathname: `restaurant/${record._id}` })}/>
+            </Tooltip>
             <Button icon={<EditOutlined />} onClick={() => handleEditRestaurant(record)} />
             <Button danger icon={<DeleteOutlined />} onClick={() => handleDeleteRestaurant(record)} />
           </Flex>
         );
       },
-      width: 120,
+      width: 180,
     },
   ];
 

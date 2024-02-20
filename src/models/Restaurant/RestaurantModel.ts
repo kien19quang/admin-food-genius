@@ -13,6 +13,7 @@ export interface IRestaurant {
   updatedAt: Date;
   createdAt: Date;
   categories: ICategory[]
+  dishes: IDish[]
 }
 
 export interface RestaurantDto {
@@ -22,4 +23,39 @@ export interface RestaurantDto {
   lng: number;
   lat: number;
   address: string;
+  categoriesIds?: string[]
+}
+
+export interface IDish {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+export interface DishDto {
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  restaurantId: string;
+}
+
+export interface IFeatured {
+  _id: string;
+  title: string;
+  description: string;
+  restaurants: IRestaurant[];
+  isVisible: boolean;
+  order: number;
+}
+
+export interface FeaturedDto {
+  title: string;
+  description: string;
+  isVisible: boolean;
+  restaurantIds: string[]
 }

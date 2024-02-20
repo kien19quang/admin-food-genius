@@ -57,8 +57,8 @@ const Home = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => 
     confirm({
       title: 'Bạn có chắc muốn xoá tài khoản này không?',
       onOk: async () => {
-        const user = await UserRepository.deleteUser(record._id);
-        if (user) {
+        const response = await UserRepository.deleteUser(record._id);
+        if (response?.deletedCount) {
           setListUser((prev) => prev.filter((item) => item._id !== record._id));
           message.success('Xoá tài khoản thành công');
         }

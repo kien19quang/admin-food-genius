@@ -1,4 +1,4 @@
-import { AppstoreOutlined, CalendarOutlined, DollarOutlined, EnvironmentOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, BookOutlined, CalendarOutlined, DollarOutlined, EnvironmentOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Layout, LayoutProps, Menu, MenuProps, Row, Typography } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -17,8 +17,8 @@ const listMenuItem: MenuProps['items'] = [
   getItem('Người dùng', 'user', <UserOutlined style={{ fontSize: 18 }} />),
   getItem('Danh mục', 'category', <AppstoreOutlined style={{ fontSize: 18 }} />),
   getItem('Nhà hàng', 'restaurant', <EnvironmentOutlined style={{ fontSize: 18 }} />),
-  getItem('Suất chiếu', 'screening', <CalendarOutlined style={{ fontSize: 18 }} />),
-  getItem('Vé đã bán', 'ticket', <DollarOutlined style={{ fontSize: 18 }} />),
+  getItem('Nổi bật', 'featured', <BookOutlined style={{ fontSize: 18 }} />),
+  getItem('Shipper', 'shipper', <DollarOutlined style={{ fontSize: 18 }} />),
 ];
 
 export default function MainLayout({ children }: LayoutProps) {

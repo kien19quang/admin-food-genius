@@ -64,7 +64,7 @@ export default function HeaderMainLayout({ collapsed }: HeaderMainLayoutProps) {
     >
       <Row justify="space-between" align="middle" style={{ width: '100%' }}>
         <Row>
-          <Input style={{ width: 300 }} placeholder="Tìm kiếm trên WhatMovie" />
+          <Input style={{ width: 300 }} placeholder="Tìm kiếm trên Food Genius" />
         </Row>
         <Row align="middle" style={{ gap: 24 }}>
           <Dropdown menu={{ items, style: { width: 200 }, onClick: handleClickMenu }} placement='bottomRight' arrow>

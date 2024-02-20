@@ -26,10 +26,10 @@ const Category = () => {
 
   const fetchListCategory = async () => {
     setLoading(true)
-    const users = await CategoryRepository.getListCategory()
+    const categories = await CategoryRepository.getListCategory()
     setLoading(false)
-    if (users) {
-      setListCategory(users)
+    if (categories) {
+      setListCategory(categories)
     }
   }
 
@@ -53,8 +53,8 @@ const Category = () => {
     confirm({
       title: 'Bạn có chắc muốn xoá danh mục này không?',
       onOk: async () => {
-        const user = await CategoryRepository.deleteCategory(record._id);
-        if (user) {
+        const response = await CategoryRepository.deleteCategory(record._id);
+        if (response?.deletedCount) {
           setListCategory((prev) => prev.filter((item) => item._id !== record._id));
           message.success('Xoá danh mục thành công');
         }

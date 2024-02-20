@@ -17,7 +17,7 @@ export default function Theme(children: JSX.Element) {
           fontSizeHeading1: 24,
           fontSizeHeading2: 20,
           borderRadius: 8,
-          fontSize: 16,
+          fontSize: 14,
         },
         components: {
           Menu: {

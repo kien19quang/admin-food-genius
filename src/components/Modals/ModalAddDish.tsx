@@ -1,31 +1,18 @@
-import { ICategory } from "@/models/Category/CategoryModel";
 import CategoryRepository from "@/services/Repositories/CategoryRepository";
 import CommonRepository from "@/services/Repositories/CommonRepository";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form, FormInstance, Input, Modal, ModalProps, Select, Upload, UploadProps } from "antd";
+import { Form, FormInstance, Input, Modal, ModalProps, Upload, UploadProps } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { use, useEffect, useState } from "react";
 
-export interface ModalRestaurantProps extends ModalProps {
+export interface ModalDishProps extends ModalProps {
   form: FormInstance<any>,
   type: 'edit' | 'create'
 }
 
-export default function ModalRestaurant ({form, type, ...props}: ModalRestaurantProps) {
+export default function ModalDish ({form, type, ...props}: ModalDishProps) {
   const [imageUrl, setImageUrl] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  const [listCategory, setListCategory] = useState<ICategory[]>([])
-  
-  useEffect(() => {
-    handleGetListCategory()
-  }, [])
-
-  const handleGetListCategory = async () => {
-    const categories = await CategoryRepository.getListCategory()
-    if (categories) {
-      setListCategory(categories)
-    }
-  }
   
   const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === 'removed') {
@@ -67,42 +54,21 @@ export default function ModalRestaurant ({form, type, ...props}: ModalRestaurant
   };
 
   return (
-    <Modal {...props} title={type === 'create' ? 'Thêm nhà hàng' : 'Chỉnh sửa nhà hàng'} width={600} centered>
+    <Modal {...props} title={type === 'create' ? 'Thêm món ăn' : 'Chỉnh sửa món ăn'} width={600}>
       <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 18 }} style={{ marginTop: 24 }}>
-        <Form.Item label="Tên nhà hàng" name="name" rules={[{ required: true, message: 'Vui lòng nhập tên nhà hàng!' }]}>
-          <Input placeholder="Example: Nhà hàng Phương Nam" />
+        <Form.Item label="Tên món ăn" name="name" rules={[{ required: true, message: 'Vui lòng nhập tên món ăn!' }]}>
+          <Input placeholder="Example: Pizza" />
         </Form.Item>
 
         <Form.Item label="Mô tả" name="description">
-          <Input placeholder="Example: Nhà hàng có truyền thống..." />
+          <Input placeholder="Example: Đậm đà hương vị..." />
         </Form.Item>
 
-        <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ nhà hàng!' }]}>
-          <Input placeholder="Địa chỉ nhà hàng" />
+        <Form.Item label="Giá" name="price" rules={[{ required: true, message: 'Vui lòng nhập giá cho món ăn!' }]}>
+          <Input placeholder="Giá của món ăn" />
         </Form.Item>
 
-        <Form.Item label="Kinh độ" name="lng" rules={[{ required: true, message: 'Vui lòng nhập kinh độ của nhà hàng!' }]}>
-          <Input placeholder="Kinh độ nhà hàng" />
-        </Form.Item>
-
-        <Form.Item label="Vĩ độ" name="lat" rules={[{ required: true, message: 'Vui lòng nhập vĩ độ của nhà hàng!' }]}>
-          <Input placeholder="Vĩ độ nhà hàng" />
-        </Form.Item>
-
-        <Form.Item label="Danh mục" name="categoriesIds">
-          <Select 
-            mode='multiple'
-            placeholder='Chọn danh mục'
-            options={listCategory.map(item => {
-              return {
-                value: item._id,
-                label: item.title
-              }
-            })}
-          />
-        </Form.Item>
-
-        <Form.Item name="file" label="Ảnh nhà hàng" valuePropName="fileList" getValueFromEvent={normFile} rules={[{ required: true, message: 'Vui lòng thêm ảnh cho nhà hàng!' }]}>
+        <Form.Item name="file" label="Ảnh món ăn" valuePropName="fileList" getValueFromEvent={normFile} rules={[{ required: true, message: 'Vui lòng thêm ảnh cho món ăn!' }]}>
           <Upload
             name="file" 
             listType="picture-card" 
